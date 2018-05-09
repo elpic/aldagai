@@ -8,13 +8,11 @@ module Aldagai
     private
 
     def read_secret_from_file
-      path = File.expand_path('./.aldagai.secret')
+      IO.binread(key_path).strip if File.exists?(key_path)
+    end
 
-      if File.exists?(path)
-        File.read(path)
-      else
-        nil
-      end
+    def key_path
+      File.expand_path('./.aldagai.secret')
     end
 
   end
