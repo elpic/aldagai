@@ -93,7 +93,7 @@ module Aldagai
       lines  = lines_for_environment(ENV['ALDAGAI_PIPELINE_ENV'])
 
       if lines.empty?
-        log_no_variables_promoted(environment)
+        log_no_variables_promoted(ENV['ALDAGAI_PIPELINE_ENV'])
       else
         variables = {}
 
@@ -172,7 +172,7 @@ module Aldagai
     end
 
     def decrypt_line_proc
-      proc { |line| (decrypt_line(line)) }
+      proc { |line| @encryptor.decrypt(line.gsub("\n", '')) }
     end
 
     def match_line_proc(name)
@@ -185,10 +185,6 @@ module Aldagai
 
     def environment_file(environment)
       File.expand_path("./.#{environment}")
-    end
-
-    def decrypt_line(line)
-      @encryptor.decrypt(line.gsub("\n", ''))
     end
 
     def value_presence(value)
