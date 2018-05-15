@@ -4,31 +4,27 @@ module Aldagai
     refine String do
 
       def red
-        colorize(31)
+        "\e[31m#{self}\e[0m"
       end
 
       def green
-        colorize(32)
+        "\e[32m#{self}\e[0m"
       end
 
       def yellow
-        colorize(33)
+        "\e[33m#{self}\e[0m"
       end
 
       def blue
-        colorize(34)
+        "\e[34m#{self}\e[0m"
       end
 
       def pink
-        colorize(35)
+        "\e[35m#{self}\e[0m"
       end
 
       def light_blue
-        colorize(36)
-      end
-
-      def colorize(color_code)
-        "\e[#{color_code}m#{self}\e[0m"
+        "\e[36m#{self}\e[0m"
       end
 
     end
