@@ -95,18 +95,23 @@ module Aldagai
       if lines.empty?
         log_no_variables_promoted(ENV['ALDAGAI_PIPELINE_ENV'])
       else
-        variables = {}
-
-        lines.each do |line|
-          name, value = line.split('=')
-          value = value_presence(value)
-
-          log_variable_was_added_or_removed(name, value)
-
-          variables.merge!({name => value})
-        end
+        variables = get_variables_from_lines(lines)
 
         heroku.config_var.update(ENV['ALDAGAI_APP_NAME'], variables)
+      end
+    end
+
+    def set_temp
+      lines  = lines_for_environment(ENV['ALDAGAI_PIPELINE_ENV'])
+
+      if lines.empty?
+        log_no_variables_promoted(ENV['ALDAGAI_PIPELINE_ENV'])
+      else
+        variables = get_variables_from_lines(lines)
+
+        variables.each do |(key, value)|
+          ENV[key] = value
+        end
       end
     end
 
@@ -114,6 +119,21 @@ module Aldagai
 
     def environments
       DEFAULT_ENVIRONMENTS
+    end
+
+    def get_variables_from_lines(lines)
+      variables = {}
+
+      lines.each do |line|
+        name, value = line.split('=')
+        value = value_presence(value)
+
+        log_variable_was_added_or_removed(name, value)
+
+        variables.merge!({name => value})
+      end
+
+      variables
     end
 
     def rewrite_file_with_lines(environment, lines, &block)
