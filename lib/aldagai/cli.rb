@@ -61,11 +61,11 @@ module Aldagai
       @manager.set
     end
 
-    desc 'set_temp', 'Sets variables in temporal execution ENV'
-    def set_temp
+    desc 'raw_list', 'raw_list'
+    def raw_list
       @manager = Aldagai::NormalVariableManager.new
 
-      @manager.set_temp
+      @manager.raw_list
     end
   end
 end
