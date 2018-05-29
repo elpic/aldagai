@@ -101,7 +101,7 @@ module Aldagai
       end
     end
 
-    def set_temp
+    def raw_list
       lines  = lines_for_environment(ENV['ALDAGAI_PIPELINE_ENV'])
 
       if lines.empty?
@@ -110,7 +110,7 @@ module Aldagai
         variables = get_variables_from_lines(lines)
 
         variables.each do |(key, value)|
-          ENV[key] = value
+          puts "#{key}=#{value}"
         end
       end
     end
@@ -141,7 +141,7 @@ module Aldagai
         file.truncate(0)
 
         lines.each do |line|
-          file.puts line
+          file.puts @encryptor.encrypt(line)
         end
 
         block.call(file) if block_given?
